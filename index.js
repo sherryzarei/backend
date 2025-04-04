@@ -11,6 +11,7 @@ const startServer = async () => {
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
     app.use(cors());
+
     // Log all incoming requests
     app.use((req, res, next) => {
         console.log('Incoming request:', {
@@ -32,7 +33,9 @@ const startServer = async () => {
     const server = new ApolloServer({
         typeDefs,
         resolvers,
-        context: ({ req }) => ({ req })
+        context: ({ req }) => ({ req }),
+        introspection: true,   // <== Required for playground in production
+        playground: true       // <== Enable GraphQL Playground
     });
 
     await server.start();
